@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-nexus-bg text-slate-100 antialiased min-h-screen selection:bg-nexus-accent selection:text-slate-900;
+  }
+}
