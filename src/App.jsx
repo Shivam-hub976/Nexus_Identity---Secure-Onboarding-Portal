@@ -1,61 +1,69 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import WizardHeader from "./components/WizardHeader";
 import StepOne from "./components/StepOne";
 import StepTwo from "./components/StepTwo";
 import StepThree from "./components/StepThree";
 import WizardFooter from "./components/WizardFooter";
 import SuccessScreen from "./components/SuccessScreen";
-import {
-  initialFormData,
-  initialErrors,
-  validateField,
-  checkStepValidity,
-} from "./utils/validation";
+import { registrationSchema, stepFields } from "./utils/schema";
 
 export default function App() {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Lifted Form Data & Real-Time Error State
-  const [formData, setFormData] = useState(initialFormData);
-  const [errors, setErrors] = useState(initialErrors);
+  // 1. Initialize React Hook Form with Zod Schema
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registrationSchema),
+    mode: "onChange",
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      dob: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
-  // Universal onChange with Real-Time Validation
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const nextFormData = { ...formData, [name]: value };
-    setFormData(nextFormData);
+  // 2. Watch all form values for Review & Submit (Step 3)
+  const formData = watch();
 
-    const errorMsg = validateField(name, value, nextFormData, setErrors);
-    setErrors((prev) => ({ ...prev, [name]: errorMsg }));
+  // 3. Validate only the current step's fields before advancing
+  const nextStep = async () => {
+    const isStepValid = await trigger(stepFields[step]);
+    if (isStepValid) {
+      setStep((prev) => Math.min(prev + 1, 3));
+    }
   };
 
-  // Derive if the Next button should be enabled/disabled
-  const isCurrentStepValid = checkStepValidity(step, formData, errors);
-
-  const nextStep = () => {
-    if (isCurrentStepValid) setStep((prev) => Math.min(prev + 1, 3));
-  };
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
-  const handleSubmit = (e) => {
-    if (e) e.preventDefault();
+  // 4. Final Submission Handler (Step 3 only)
+  const onSubmit = (data) => {
     if (step !== 3) return;
-    console.log("Final Submission Payload:", formData);
+    console.log("Final Submission Payload:", data);
     setIsSubmitted(true);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (step < 3 && isCurrentStepValid) nextStep();
-      else if (step === 3) handleSubmit(e);
+      if (step < 3) await nextStep();
+      else if (step === 3) handleSubmit(onSubmit)();
     }
   };
 
   const handleReset = () => {
-    setFormData(initialFormData);
-    setErrors(initialErrors);
+    reset();
     setStep(1);
     setIsSubmitted(false);
   };
@@ -73,28 +81,16 @@ export default function App() {
             onKeyDown={handleKeyDown}
             noValidate
           >
-            {step === 1 && (
-              <StepOne
-                formData={formData}
-                errors={errors}
-                handleChange={handleChange}
-              />
-            )}
-            {step === 2 && (
-              <StepTwo
-                formData={formData}
-                errors={errors}
-                handleChange={handleChange}
-              />
-            )}
+            {step === 1 && <StepOne register={register} errors={errors} />}
+            {step === 2 && <StepTwo register={register} errors={errors} />}
             {step === 3 && <StepThree formData={formData} />}
 
             <WizardFooter
               step={step}
               prevStep={prevStep}
               nextStep={nextStep}
-              handleSubmit={handleSubmit}
-              isNextDisabled={!isCurrentStepValid}
+              handleSubmit={handleSubmit(onSubmit)}
+              isNextDisabled={false}
             />
           </form>
         )}
