@@ -5,61 +5,57 @@ import StepTwo from "./components/StepTwo";
 import StepThree from "./components/StepThree";
 import WizardFooter from "./components/WizardFooter";
 import SuccessScreen from "./components/SuccessScreen";
+import {
+  initialFormData,
+  initialErrors,
+  validateField,
+  checkStepValidity,
+} from "./utils/validation";
 
 export default function App() {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    dob: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  // Lifted Form Data & Real-Time Error State
+  const [formData, setFormData] = useState(initialFormData);
+  const [errors, setErrors] = useState(initialErrors);
 
+  // Universal onChange with Real-Time Validation
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const nextFormData = { ...formData, [name]: value };
+    setFormData(nextFormData);
+
+    const errorMsg = validateField(name, value, nextFormData, setErrors);
+    setErrors((prev) => ({ ...prev, [name]: errorMsg }));
   };
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
+  // Derive if the Next button should be enabled/disabled
+  const isCurrentStepValid = checkStepValidity(step, formData, errors);
+
+  const nextStep = () => {
+    if (isCurrentStepValid) setStep((prev) => Math.min(prev + 1, 3));
+  };
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
-  // Only fires when the Submit Registration button on Step 3 is clicked
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
     if (step !== 3) return;
-
     console.log("Final Submission Payload:", formData);
     setIsSubmitted(true);
   };
 
-  // Safely advance steps with the Enter key without ever triggering submission
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (step < 3) {
-        nextStep();
-      } else {
-        handleSubmit(e);
-      }
+      if (step < 3 && isCurrentStepValid) nextStep();
+      else if (step === 3) handleSubmit(e);
     }
   };
 
   const handleReset = () => {
-    setFormData({
-      firstName: "",
-      lastName: "",
-      dob: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+    setFormData(initialFormData);
+    setErrors(initialErrors);
     setStep(1);
     setIsSubmitted(false);
   };
@@ -72,17 +68,24 @@ export default function App() {
         {isSubmitted ? (
           <SuccessScreen handleReset={handleReset} />
         ) : (
-          /* Neutralize native form auto-submit completely */
           <form
             onSubmit={(e) => e.preventDefault()}
             onKeyDown={handleKeyDown}
             noValidate
           >
             {step === 1 && (
-              <StepOne formData={formData} handleChange={handleChange} />
+              <StepOne
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+              />
             )}
             {step === 2 && (
-              <StepTwo formData={formData} handleChange={handleChange} />
+              <StepTwo
+                formData={formData}
+                errors={errors}
+                handleChange={handleChange}
+              />
             )}
             {step === 3 && <StepThree formData={formData} />}
 
@@ -91,6 +94,7 @@ export default function App() {
               prevStep={prevStep}
               nextStep={nextStep}
               handleSubmit={handleSubmit}
+              isNextDisabled={!isCurrentStepValid}
             />
           </form>
         )}

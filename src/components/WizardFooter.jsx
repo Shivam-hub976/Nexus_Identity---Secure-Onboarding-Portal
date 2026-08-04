@@ -3,6 +3,7 @@ export default function WizardFooter({
   prevStep,
   nextStep,
   handleSubmit,
+  isNextDisabled,
 }) {
   return (
     <div className="flex justify-between items-center mt-8 pt-5 border-t border-slate-700/50">
@@ -21,7 +22,8 @@ export default function WizardFooter({
         <button
           type="button"
           onClick={nextStep}
-          className="px-6 py-2 text-sm font-semibold rounded-lg bg-nexus-accent text-slate-900 hover:bg-sky-300 transition-all shadow-md"
+          disabled={isNextDisabled}
+          className="px-6 py-2 text-sm font-semibold rounded-lg bg-nexus-accent text-slate-900 hover:bg-sky-300 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-md"
         >
           Next
         </button>
