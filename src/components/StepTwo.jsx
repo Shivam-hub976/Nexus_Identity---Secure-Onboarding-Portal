@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function StepTwo({ formData, errors, handleChange }) {
+export default function StepTwo({ register, errors }) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -25,20 +25,17 @@ export default function StepTwo({ formData, errors, handleChange }) {
         <input
           type="email"
           id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
           placeholder="abhishek@nexusidentity.com"
+          {...register("email")}
           className={`w-full px-3.5 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-1 transition-all ${
             errors.email
               ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
               : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
           }`}
-          required
         />
         {errors.email && (
           <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.email}
+            {errors.email.message}
           </p>
         )}
       </div>
@@ -55,16 +52,13 @@ export default function StepTwo({ formData, errors, handleChange }) {
           <input
             type={showPassword ? "text" : "password"}
             id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
             placeholder="Minimum 8 characters"
+            {...register("password")}
             className={`w-full pl-3.5 pr-11 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-1 transition-all ${
               errors.password
                 ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
                 : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
             }`}
-            required
           />
           <button
             type="button"
@@ -114,7 +108,7 @@ export default function StepTwo({ formData, errors, handleChange }) {
         </div>
         {errors.password && (
           <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.password}
+            {errors.password.message}
           </p>
         )}
       </div>
@@ -130,20 +124,17 @@ export default function StepTwo({ formData, errors, handleChange }) {
         <input
           type={showPassword ? "text" : "password"}
           id="confirmPassword"
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          onChange={handleChange}
           placeholder="Re-enter your password"
+          {...register("confirmPassword")}
           className={`w-full px-3.5 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-1 transition-all ${
             errors.confirmPassword
               ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
               : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
           }`}
-          required
         />
         {errors.confirmPassword && (
           <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.confirmPassword}
+            {errors.confirmPassword.message}
           </p>
         )}
       </div>
