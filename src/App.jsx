@@ -13,7 +13,7 @@ export default function App() {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // 1. Initialize React Hook Form with Zod Schema
+  // Initialize React Hook Form with Zod Schema
   const {
     register,
     handleSubmit,
@@ -34,10 +34,10 @@ export default function App() {
     },
   });
 
-  // 2. Watch all form values for Review & Submit (Step 3) and conditional validation
+  // Watch all form values for Review & Submit (Step 3) and conditional validation
   const formData = watch();
 
-  // 3. Validate only the current step's fields before advancing
+  // Validate only the current step's fields before advancing
   const nextStep = async () => {
     const isStepValid = await trigger(stepFields[step]);
     if (isStepValid) {
@@ -47,7 +47,7 @@ export default function App() {
 
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
-  // 4. Final Submission Handler (Step 3 only)
+  // Final Submission Handler (Step 3 only)
   const onSubmit = (data) => {
     if (step !== 3) return;
     console.log("Final Submission Payload:", data);
@@ -68,7 +68,7 @@ export default function App() {
     setIsSubmitted(false);
   };
 
-  // 5. Dynamically disable Next button if current step has errors or empty required fields
+  // Dynamically disable Next button if current step has errors or empty required fields
   const currentFields = stepFields[step] || [];
   const isNextDisabled = currentFields.some(
     (field) => errors[field] || !formData[field],
