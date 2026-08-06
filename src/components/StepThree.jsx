@@ -1,6 +1,6 @@
 export default function StepThree({ formData }) {
   const maskedPassword = "•".repeat(
-    formData.password ? formData.password.length : 8,
+    formData?.password ? formData.password.length : 8,
   );
 
   return (
@@ -15,7 +15,7 @@ export default function StepThree({ formData }) {
       </div>
 
       {/* Summary Card */}
-      <div className="bg-slate-900/60 border border-slate-700/80 rounded-xl p-4 sm:p-5 space-y-4 text-sm">
+      <div className="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 sm:p-5 space-y-4 text-sm shadow-inner">
         {/* Personal Information Section */}
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-wider text-nexus-accent mb-2">
@@ -25,19 +25,19 @@ export default function StepThree({ formData }) {
             <div>
               <dt className="text-slate-400">First Name</dt>
               <dd className="font-medium text-slate-100 mt-0.5">
-                {formData.firstName || "—"}
+                {formData?.firstName || "—"}
               </dd>
             </div>
             <div>
               <dt className="text-slate-400">Last Name</dt>
               <dd className="font-medium text-slate-100 mt-0.5">
-                {formData.lastName || "—"}
+                {formData?.lastName || "—"}
               </dd>
             </div>
             <div className="sm:col-span-2 mt-1">
               <dt className="text-slate-400">Date of Birth</dt>
               <dd className="font-medium text-slate-100 mt-0.5">
-                {formData.dob || "—"}
+                {formData?.dob || "—"}
               </dd>
             </div>
           </dl>
@@ -54,7 +54,7 @@ export default function StepThree({ formData }) {
             <div className="sm:col-span-2">
               <dt className="text-slate-400">Email Address</dt>
               <dd className="font-medium text-slate-100 mt-0.5 break-all">
-                {formData.email || "—"}
+                {formData?.email || "—"}
               </dd>
             </div>
             <div className="sm:col-span-2 mt-1">
@@ -67,7 +67,7 @@ export default function StepThree({ formData }) {
         </div>
       </div>
 
-      <div className="p-3 bg-sky-950/30 border border-sky-800/50 rounded-lg">
+      <div className="p-3.5 bg-sky-950/40 border border-sky-800/60 rounded-xl">
         <p className="text-xs text-sky-300">
           By clicking <span className="font-semibold">Submit Registration</span>
           , you confirm that your details are correct.

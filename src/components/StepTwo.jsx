@@ -3,6 +3,13 @@ import { useState } from "react";
 export default function StepTwo({ register, errors }) {
   const [showPassword, setShowPassword] = useState(false);
 
+  const inputStyle = (hasError) =>
+    `w-full px-3.5 py-2.5 bg-slate-900/90 border rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
+      hasError
+        ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
+        : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent/20"
+    }`;
+
   return (
     <div className="space-y-5 animate-fadeIn">
       <div>
@@ -27,15 +34,11 @@ export default function StepTwo({ register, errors }) {
           id="email"
           placeholder="abhishek@nexusidentity.com"
           {...register("email")}
-          className={`w-full px-3.5 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-1 transition-all ${
-            errors.email
-              ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
-              : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
-          }`}
+          className={inputStyle(errors.email)}
         />
         {errors.email && (
-          <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.email.message}
+          <p className="text-rose-400 text-xs mt-1.5 font-medium animate-fadeIn">
+            {errors.email?.message}
           </p>
         )}
       </div>
@@ -54,10 +57,10 @@ export default function StepTwo({ register, errors }) {
             id="password"
             placeholder="Minimum 8 characters"
             {...register("password")}
-            className={`w-full pl-3.5 pr-11 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-1 transition-all ${
+            className={`w-full pl-3.5 pr-11 py-2.5 bg-slate-900/90 border rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
               errors.password
-                ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
-                : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
+                ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
+                : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent/20"
             }`}
           />
           <button
@@ -107,8 +110,8 @@ export default function StepTwo({ register, errors }) {
           </button>
         </div>
         {errors.password && (
-          <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.password.message}
+          <p className="text-rose-400 text-xs mt-1.5 font-medium animate-fadeIn">
+            {errors.password?.message}
           </p>
         )}
       </div>
@@ -126,15 +129,11 @@ export default function StepTwo({ register, errors }) {
           id="confirmPassword"
           placeholder="Re-enter your password"
           {...register("confirmPassword")}
-          className={`w-full px-3.5 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-1 transition-all ${
-            errors.confirmPassword
-              ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
-              : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
-          }`}
+          className={inputStyle(errors.confirmPassword)}
         />
         {errors.confirmPassword && (
-          <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.confirmPassword.message}
+          <p className="text-rose-400 text-xs mt-1.5 font-medium animate-fadeIn">
+            {errors.confirmPassword?.message}
           </p>
         )}
       </div>

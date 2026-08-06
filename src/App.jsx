@@ -34,7 +34,7 @@ export default function App() {
     },
   });
 
-  // 2. Watch all form values for Review & Submit (Step 3)
+  // 2. Watch all form values for Review & Submit (Step 3) and conditional validation
   const formData = watch();
 
   // 3. Validate only the current step's fields before advancing
@@ -68,8 +68,14 @@ export default function App() {
     setIsSubmitted(false);
   };
 
+  // 5. Dynamically disable Next button if current step has errors or empty required fields
+  const currentFields = stepFields[step] || [];
+  const isNextDisabled = currentFields.some(
+    (field) => errors[field] || !formData[field],
+  );
+
   return (
-    <main className="min-h-screen bg-nexus-bg flex items-center justify-center p-4 md:p-6">
+    <main className="min-h-screen bg-nexus-bg flex items-center justify-center p-4 md:p-6 font-sans">
       <div className="bg-nexus-card border border-slate-700/60 rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl transition-all">
         {!isSubmitted && <WizardHeader step={step} />}
 
@@ -90,7 +96,7 @@ export default function App() {
               prevStep={prevStep}
               nextStep={nextStep}
               handleSubmit={handleSubmit(onSubmit)}
-              isNextDisabled={false}
+              isNextDisabled={isNextDisabled}
             />
           </form>
         )}

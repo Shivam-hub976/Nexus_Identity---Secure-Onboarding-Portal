@@ -1,4 +1,11 @@
 export default function StepOne({ register, errors }) {
+  const inputStyle = (hasError) =>
+    `w-full px-3.5 py-2.5 bg-slate-900/90 border rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
+      hasError
+        ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
+        : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent/20"
+    }`;
+
   return (
     <div className="space-y-5 animate-fadeIn">
       <div>
@@ -23,15 +30,11 @@ export default function StepOne({ register, errors }) {
           id="firstName"
           placeholder="e.g. Abhishek"
           {...register("firstName")}
-          className={`w-full px-3.5 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-1 transition-all ${
-            errors.firstName
-              ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
-              : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
-          }`}
+          className={inputStyle(errors.firstName)}
         />
         {errors.firstName && (
-          <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.firstName.message}
+          <p className="text-rose-400 text-xs mt-1.5 font-medium animate-fadeIn">
+            {errors.firstName?.message}
           </p>
         )}
       </div>
@@ -49,15 +52,11 @@ export default function StepOne({ register, errors }) {
           id="lastName"
           placeholder="e.g. Sharma"
           {...register("lastName")}
-          className={`w-full px-3.5 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-1 transition-all ${
-            errors.lastName
-              ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
-              : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
-          }`}
+          className={inputStyle(errors.lastName)}
         />
         {errors.lastName && (
-          <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.lastName.message}
+          <p className="text-rose-400 text-xs mt-1.5 font-medium animate-fadeIn">
+            {errors.lastName?.message}
           </p>
         )}
       </div>
@@ -74,15 +73,11 @@ export default function StepOne({ register, errors }) {
           type="date"
           id="dob"
           {...register("dob")}
-          className={`w-full px-3.5 py-2.5 bg-slate-900/80 border rounded-lg text-slate-100 text-sm focus:outline-none focus:ring-1 transition-all ${
-            errors.dob
-              ? "border-rose-500 focus:border-rose-500 focus:ring-rose-500"
-              : "border-slate-700/80 focus:border-nexus-accent focus:ring-nexus-accent"
-          }`}
+          className={inputStyle(errors.dob)}
         />
         {errors.dob && (
-          <p className="text-rose-400 text-xs mt-1 font-medium animate-fadeIn">
-            {errors.dob.message}
+          <p className="text-rose-400 text-xs mt-1.5 font-medium animate-fadeIn">
+            {errors.dob?.message}
           </p>
         )}
       </div>

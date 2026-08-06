@@ -5,10 +5,12 @@ export const registrationSchema = z
     firstName: z
       .string()
       .min(1, { message: "First name is required." })
+      .min(2, { message: "Must be at least 2 characters." })
       .trim(),
     lastName: z
       .string()
       .min(1, { message: "Last name is required." })
+      .min(2, { message: "Must be at least 2 characters." })
       .trim(),
     dob: z
       .string()
@@ -16,7 +18,10 @@ export const registrationSchema = z
     email: z
       .string()
       .min(1, { message: "Email is required." })
-      .email({ message: "Please enter a valid email address containing an @ symbol." }),
+      .email({
+        message: "Please enter a valid email address containing an @ symbol.",
+      })
+      .trim(),
     password: z
       .string()
       .min(1, { message: "Password is required." })
